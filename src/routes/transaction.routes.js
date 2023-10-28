@@ -1,5 +1,6 @@
 const {Router} = require('express');
-const createTransactionController = require('../controllers/createTransactionController');
+
+const createTransactionController = require('../controllers/transactionsControllers/createTransactionController');
 
 const {
   verifyCategoryExists,

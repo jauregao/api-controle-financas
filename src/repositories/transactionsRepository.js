@@ -31,6 +31,17 @@ const transactionsRepository = {
 
       return transaction.rows[0];
     },
+    findOne: async function(field, value) {
+
+        const sql = `
+            SELECT * FROM transacoes
+            where ${field} = $1 RETURNING *;
+        `;
+
+        const transaction = await pool.query(sql, [value]);
+
+      return transaction.rows;
+  },
     update: async function(transactionData, id, userID) {
 
       const { tipo, descricao, valor, data, categoria_id } = transactionData;

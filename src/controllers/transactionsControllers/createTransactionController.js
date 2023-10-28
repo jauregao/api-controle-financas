@@ -1,4 +1,4 @@
-const service = require('../services/createTransactionService');
+const service = require('../../services/transactions/createTransactionService');
 
 const createTransactionController = {
 

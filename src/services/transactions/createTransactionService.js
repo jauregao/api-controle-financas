@@ -1,4 +1,4 @@
-const repository = require('../repositories/transactionsRepository');
+const repository = require('../../repositories/transactionsRepository');
 
 const createTransactionService = {
   async execute(transactionData) {
