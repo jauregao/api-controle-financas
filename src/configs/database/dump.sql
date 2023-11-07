@@ -1,5 +1,3 @@
-CREATE DATABASE dindin;
-
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,

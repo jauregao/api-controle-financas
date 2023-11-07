@@ -4,16 +4,17 @@ const createTransactionController = {
 
   async handle(req, res) {
 
-      try {
-        const { tipo, descricao, valor, data, categoria_id } = req.body;
+    try {
+      const { tipo, descricao, valor, data, categoria_id } = req.body;
+      const userID = req.usuario.id;
 
-        const clientCreated = await service.execute(tipo, descricao, valor, data, categoria_id);
+      const transactionCreated = await service.execute({ tipo, descricao, valor, data, categoria_id, userID });
 
-        return res.status(201).json(clientCreated);
+      return res.status(201).json(transactionCreated);
 
-      } catch (error) {
-        return res.status(500).json({message: 'Erro interno do servidor'})
-      }
+    } catch (error) {
+      return res.status(500).json({ message: 'Erro interno do servidor' })
+    }
   }
 }
 

@@ -1,13 +1,12 @@
-const pool = require('../configs/connection/index')
+const knex = require('../configs/connection/index')
 
 const verifyCategoryExists = async function (req, res, next) {
-  
+
   const { categoria_id } = req.body;
 
-  const query = `SELECT * FROM categorias WHERE id = $1`;
-  const categoryExists = await pool.query(query, [categoria_id]);
+  const categoryExists = await knex('categorias').where('id', categoria_id);
 
-  if(!categoryExists){
+  if (!categoryExists) {
     return res.status(400).json({ error: 'Categoria não encontrada' });
   }
 

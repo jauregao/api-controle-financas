@@ -1,67 +1,62 @@
-const pool = require('../configs/connection/index')
+const knex = require('../configs/connection/index')
 
 const transactionsRepository = {
 
-    create: async function(transactionData, userID) {
-      const { tipo, descricao, valor, data, categoria_id } = transactionData;
+  create: async function (transactionData, userID) {
+    const { tipo, descricao, valor, data, categoria_id } = transactionData;
 
-        const sql = `
-        INSERT INTO transacoes
-        (tipo, descricao, valor, data, categoria_id, usuario_id)
-        VALUES
-        ($1, $2, $3, $4, $5, $6) RETURNING *`;
+    const transaction = await knex('transacoes')
+      .insert({ tipo, descricao, valor, data, categoria_id, 'usuario_id': userID })
+      .returning('*')
 
-        const transaction = await pool.query(sql, [tipo, descricao, valor, data, categoria_id, userID]);
-
-      return transaction.rows[0];
-    },
-    readAll: async function(userID) {
-
-        const sql = 'SELECT * FROM transacoes WHERE usuario_id = $1';
-
-        const transactions = await pool.query(sql, [userID]);
-          
-      return transactions.rows;
-    },
-    findByPk: async function(id, userID) {
-
-        const sql = `SELECT * FROM transacoes WHERE id = $1 AND usuario_id = $2`
-
-        const transaction = await pool.query(sql, [id, userID]);
-
-      return transaction.rows[0];
-    },
-    findOne: async function(field, value) {
-
-        const sql = `
-            SELECT * FROM transacoes
-            where ${field} = $1 RETURNING *;
-        `;
-
-        const transaction = await pool.query(sql, [value]);
-
-      return transaction.rows;
+    return transaction;
   },
-    update: async function(transactionData, id, userID) {
+  readAll: async function (userID) {
 
-      const { tipo, descricao, valor, data, categoria_id } = transactionData;
+    const transactions = await knex('transacoes')
+      .where('usuario_id', userID)
+      .returning('*');
 
-        const sql = `UPDATE transacoes SET
-        tipo = $1, descricao = $2, valor = $3, data = $4, categoria_id = $5
-        WHERE id = $6 AND usuario_id = $7 RETURNING *` 
+    return transactions;
+  },
+  findByPk: async function (id, userID) {
 
-        const updatedTransaction = await pool.query(sql, [tipo, descricao, valor, data, categoria_id, id, userID]);
+    const transaction = await knex('transacoes')
+      .where('id', id)
+      .andWhere('usuario_id', userID)
+      .returning('*')
 
-      return updatedTransaction.rows[0];
-    },
-    delete: async function(id) {
+    return transaction;
+  },
+  findOne: async function (field, value) {
 
-        const sql = `DELETE FROM transacoes WHERE id = $1 AND usuario_id = $2`;
-        
-        const deletedTransactions = await pool.query(sql, [id, userID]);
+    const transaction = await knex('transacoes')
+      .where(field, value)
+      .returning('*');
 
-      return deletedTransactions.rows[0];
-}
+    return transaction;
+  },
+  update: async function (transactionData, id, userID) {
+
+    const { tipo, descricao, valor, data, categoria_id } = transactionData;
+
+    const updatedTransaction = await knex('transacoes')
+      .where('usuario_id', userID)
+      .andWhere('id', id)
+      .update({ tipo, descricao, valor, data, categoria_id })
+      .returning('*')
+
+    return updatedTransaction;
+  },
+  delete: async function (id, userID) {
+
+    await knex('transacoes')
+      .where({ id })
+      .andWhere('usuario_id', userID)
+      .del();
+
+    return { message: 'Transação deletada com sucesso.' };
+  }
 };
 
 module.exports = transactionsRepository;

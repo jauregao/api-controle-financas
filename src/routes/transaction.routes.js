@@ -1,17 +1,21 @@
-const {Router} = require('express');
-
-const createTransactionController = require('../controllers/transactionsControllers/createTransactionController');
+const { Router } = require('express');
 
 const {
-  verifyCategoryExists,
-  verifyTransactionFields,
-  verifyType
+    createTransactionController,
+    getAllTransactionsController
+} = require('../controllers/transactionsControllers/index');
+
+const {
+    verifyCategoryExists,
+    verifyTransactionFields,
+    verifyType
 } = require('../middlewares/index')
 
 const transactionRoutes = Router();
 
 transactionRoutes.get(
-    '/transacao');
+    '/transacao',
+    getAllTransactionsController.handle);
 
 transactionRoutes.get(
     '/transacao/:id');

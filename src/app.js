@@ -1,10 +1,13 @@
 const express = require('express');
+const cors = require('cors');
+
 const port = 3000;
+
 const app = express();
 
+app.use(cors())
+
 require('dotenv').config();
-/** se importo as configs do .env no meu entry point,
- * posso chamar em outros arqivos sem precisar importar em todos */
 
 const transactionRoutes = require('./routes/transaction.routes');
 const usersRoutes = require('./routes/users.routes');
@@ -16,4 +19,4 @@ app.use(transactionRoutes);
 app.use(usersRoutes);
 app.use(categoriesRoutes);
 
-app.listen(port);
+app.listen(port, () => console.log(`Rodando na porta ${port}`))
