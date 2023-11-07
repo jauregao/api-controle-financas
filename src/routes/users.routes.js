@@ -1,9 +1,34 @@
-const {Router} = require('express');
+const { Router } = require('express');
+
+const {
+    createUserController,
+    loginUserController,
+    getUsersController,
+    updateUserController,
+    deleteUserController
+} = require('../controllers/usersControllers/index')
 
 const usersRoutes = Router();
 
 usersRoutes.get(
-    '/usuario');
+    '/login',
+    loginUserController
+);
+usersRoutes.get(
+    '/usuario',
+    getUsersController
+);
+usersRoutes.post(
+    '/usuario',
+    createUserController
+);
+usersRoutes.delete(
+    '/usuario',
+    deleteUserController
+);
+usersRoutes.put(
+    '/usuario',
+    updateUserController
+);
 
-
-module.exports = usersRoutes; 
+module.exports = usersRoutes;

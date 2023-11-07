@@ -12,29 +12,29 @@ const usersRepository = {
 
     return user;
   },
-  readThis: async function (id) {
+  readThis: async function (userID) {
 
     const user = await knex('usuarios')
-      .where({ id })
+      .where({ userID })
       .returning('*');
 
     return user;
   },
-  update: async function (userData, id) {
+  update: async function (userData, userID) {
 
     const { nome, email, senha } = userData;
 
     const updatedUser = await knex('usuarios')
       .update({ nome, email, senha })
-      .where({ id })
+      .where({ userID })
       .returning('*');
 
     return updatedUser;
   },
-  delete: async function (id) {
+  delete: async function (userID) {
 
     await knex('usuarios')
-      .where({ id })
+      .where({ userID })
       .del();
 
     return { message: 'Usuário deletado com sucesso' }
