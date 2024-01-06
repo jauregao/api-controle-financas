@@ -2,33 +2,39 @@ const { Router } = require('express');
 
 const {
     createUserController,
-    loginUserController,
-    getUsersController,
-    updateUserController,
+    loginController,
+    listUsersController,
+    getUserController,
+    updatedUserController,
     deleteUserController
 } = require('../controllers/usersControllers/index')
 
 const usersRoutes = Router();
 
-usersRoutes.get(
-    '/login',
-    loginUserController
-);
+// usersRoutes.get(
+//     '/login',
+//     loginController
+// );
+
 usersRoutes.get(
     '/usuario',
-    getUsersController
+    listUsersController.handle
+);
+usersRoutes.get(
+    '/usuario/:id',
+    getUserController.handle
 );
 usersRoutes.post(
     '/usuario',
-    createUserController
+    createUserController.handle
 );
 usersRoutes.delete(
     '/usuario',
-    deleteUserController
+    deleteUserController.handle
 );
 usersRoutes.put(
     '/usuario',
-    updateUserController
+    updatedUserController.handle
 );
 
 module.exports = usersRoutes;

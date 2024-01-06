@@ -4,9 +4,9 @@ const createUserController = {
   async handle(req, res) {
 
     try {
-      const { nome, email, senha } = req.body;
+      const { nome, sobrenome, email, usuario, senha } = req.body;
 
-      const newUser = await service.execute({ nome, email, senha });
+      const newUser = await service.execute({ nome, sobrenome, email, usuario, senha });
 
       return res.status(201).json(newUser);
 

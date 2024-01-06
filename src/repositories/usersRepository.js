@@ -1,16 +1,24 @@
-const knex = require('knex');
+const knex = require('../configs/connection/index');
 
 const usersRepository = {
 
   create: async function (userData) {
 
-    const { nome, email, senha } = userData;
+    const { nome, sobrenome, email, usuario, senha } = userData;
+
+    await knex('usuarios').insert({ nome, sobrenome, email, usuario, senha });
 
     const user = await knex('usuarios')
-      .insert({ nome, email, senha })
-      .returning('*')
+      .select('nome', 'sobrenome', 'email', 'usuario')
+      .where({ email })
+      .first();
 
     return user;
+  },
+  list: async function () {
+    const usersList = await knex('usuarios');
+
+    return usersList;
   },
   readThis: async function (userID) {
 
@@ -22,12 +30,12 @@ const usersRepository = {
   },
   update: async function (userData, userID) {
 
-    const { nome, email, senha } = userData;
+    const { nome, sobrenome, email, usuario, senha } = userData;
 
     const updatedUser = await knex('usuarios')
-      .update({ nome, email, senha })
+      .update({ nome, sobrenome, email, usuario, senha })
       .where({ userID })
-      .returning('*');
+      .returning([nome, sobrenome, email, usuario]);
 
     return updatedUser;
   },

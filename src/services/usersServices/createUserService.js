@@ -1,9 +1,9 @@
-const repository = require('../../repositories/usersRepository');
+const { create } = require('../../repositories/usersRepository');
 
 const createUserService = {
   async execute(userData) {
 
-    const newUser = await repository.create(userData);
+    const newUser = await create(userData);
 
     return newUser;
 
