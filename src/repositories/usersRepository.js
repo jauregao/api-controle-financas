@@ -15,10 +15,13 @@ const usersRepository = {
 
     return user;
   },
-  list: async function () {
-    const usersList = await knex('usuarios');
+  findOne: async function (field, value) {
 
-    return usersList;
+    const user = await knex('usuarios')
+      .where(field, value)
+      .returning('*');
+
+    return user;
   },
   readThis: async function (userID) {
 
