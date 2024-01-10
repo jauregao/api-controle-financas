@@ -1,4 +1,5 @@
 const knex = require('../configs/connection/index');
+const bcrypt = require('bcrypt');
 
 const usersRepository = {
 
@@ -6,7 +7,9 @@ const usersRepository = {
 
     const { nome, sobrenome, email, usuario, senha } = userData;
 
-    await knex('usuarios').insert({ nome, sobrenome, email, usuario, senha });
+    const cryptPass = await bcrypt.hash(senha, 6);
+
+    await knex('usuarios').insert({ nome, sobrenome, email, usuario, cryptPass });
 
     const user = await knex('usuarios')
       .select('nome', 'sobrenome', 'email', 'usuario')
